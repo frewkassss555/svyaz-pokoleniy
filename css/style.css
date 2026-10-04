@@ -1,0 +1,286 @@
+/* ========== Палитра и основа ========== */
+:root {
+  --linen: #f6f1e7;
+  --linen-dark: #ece3d1;
+  --red: #b3122b;
+  --red-dark: #8a0d21;
+  --green: #1f6b3a;
+  --ink: #2a1b17;
+  --muted: #6b5a52;
+  --radius: 6px;
+  --max: 1080px;
+  --font-head: "Montserrat", Arial, sans-serif; /* шрифт заголовков: менять здесь */
+  --font-text: "Onest", Arial, sans-serif;      /* шрифт текста: менять здесь */
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--linen);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+h1, h2, h3 { font-family: var(--font-head); line-height: 1.15; margin: 0 0 .5em; }
+h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--red); }
+h3 { font-size: 1.25rem; }
+a { color: var(--red); }
+img { max-width: 100%; display: block; }
+
+/* Орнамент ромбов — как на вышитом рушнике. Рисуется SVG прямо в CSS. */
+.ornament-band {
+  height: 44px;
+  background-color: var(--linen);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'><path d='M22 3 L41 22 L22 41 L3 22 Z' fill='none' stroke='%23b3122b' stroke-width='3'/><path d='M22 14 L30 22 L22 30 L14 22 Z' fill='%23b3122b'/><rect x='0' y='0' width='44' height='4' fill='%23b3122b' opacity='.0'/></svg>");
+  background-repeat: repeat-x;
+  background-position: center;
+  border-top: 3px solid var(--red);
+  border-bottom: 3px solid var(--red);
+}
+
+/* ========== Шапка ========== */
+.topbar {
+  position: sticky; top: 0; z-index: 1000;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: .6rem 1.2rem;
+  background: rgba(246, 241, 231, .95);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--linen-dark);
+}
+.brand { font-family: var(--font-head); font-weight: 800; text-decoration: none; color: var(--red); }
+.topbar nav { display: flex; gap: 1.1rem; flex-wrap: wrap; font-size: .95rem; }
+.topbar nav a { text-decoration: none; color: var(--ink); }
+.topbar nav a:hover { color: var(--red); }
+
+/* ========== Герой ========== */
+/* Фото на фоне. Сверху два слоя затемнения цветом «чернил»:
+   слева темнее (там текст), справа светлее (там видно фото). */
+.hero {
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(90deg, rgba(42, 27, 23, .85) 0%, rgba(42, 27, 23, .55) 55%, rgba(42, 27, 23, .25) 100%),
+    url("../images/hero-palace.jpg");
+  background-size: cover;
+  background-position: center 30%;
+  /* Первый экран на всю высоту окна (минус шапка), орнамент прижат к низу */
+  min-height: calc(100vh - 3.2rem);
+  display: flex;
+  flex-direction: column;
+}
+/* flex: 1 — блок с текстом забирает всё свободное место.
+   justify-content: flex-end — текст прижат к низу; нижний padding — расстояние до орнамента */
+.hero-inner {
+  flex: 1; width: 100%; max-width: var(--max); margin: 0 auto; padding: 4rem 1.2rem 5rem;
+  display: flex; flex-direction: column; justify-content: flex-end;
+}
+.kicker { text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; color: var(--linen); opacity: .85; margin: 0 0 1rem; }
+.hero h1 { font-size: clamp(2.2rem, 7vw, 4.6rem); font-weight: 800; color: #fff; }
+.hero h1 span { color: #f3c4c9; display: block; }
+.lead { max-width: 700px; font-size: 1.15rem; color: var(--linen); }
+.btn {
+  display: inline-block; margin-top: 1rem; padding: .8rem 1.6rem;
+  background: var(--red); color: #fff; text-decoration: none;
+  border-radius: var(--radius); font-weight: 700; transition: background .2s;
+}
+.btn:hover { background: var(--red-dark); }
+.hero .btn { align-self: flex-start; } /* кнопка по ширине текста, а не на всю строку */
+
+/* ========== Блоки ========== */
+.block { padding: 4rem 1.2rem; max-width: none; }
+.block > * { max-width: var(--max); margin-left: auto; margin-right: auto; }
+.block-tint { background: var(--linen-dark); }
+.section-lead { color: var(--muted); margin-bottom: 2rem; }
+
+/* ========== Лента времени ========== */
+.timeline { list-style: none; padding: 0; position: relative; }
+.timeline::before {
+  content: ""; position: absolute; left: 14px; top: 0; bottom: 0; width: 3px; background: var(--red);
+}
+.tl-item { position: relative; padding-left: 48px; margin-bottom: 1.2rem; }
+.tl-item::before {
+  content: ""; position: absolute; left: 6px; top: 1.1rem; width: 19px; height: 19px;
+  background: var(--linen); border: 3px solid var(--red); transform: rotate(45deg);
+}
+.tl-btn {
+  width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer;
+  background: #fff; border: 1px solid var(--linen-dark); border-radius: var(--radius);
+  padding: 1rem 1.2rem; transition: box-shadow .2s, border-color .2s;
+}
+.tl-btn:hover, .tl-btn:focus-visible { border-color: var(--red); box-shadow: 0 4px 14px rgba(179, 18, 43, .12); outline: none; }
+.tl-year { font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; color: var(--red); }
+.tl-title { font-weight: 700; margin-left: .6rem; }
+.tl-text { display: none; margin: .7rem 0 0; color: var(--muted); }
+.tl-item.open .tl-text { display: block; }
+.tl-item.open::before { background: var(--red); }
+
+/* ========== Карта ========== */
+.filters { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+.chip {
+  font: inherit; font-size: .9rem; cursor: pointer; padding: .35rem .9rem;
+  border: 2px solid var(--red); background: transparent; color: var(--red);
+  border-radius: 999px; transition: all .15s;
+}
+.chip.active, .chip:hover { background: var(--red); color: #fff; }
+
+.map-wrap { display: grid; grid-template-columns: 1fr 320px; gap: 1rem; }
+#map-canvas { height: 480px; border-radius: var(--radius); border: 3px solid var(--red); z-index: 1; }
+.place-card { background: #fff; border-radius: var(--radius); padding: 1.1rem; border: 1px solid var(--linen-dark); overflow: auto; max-height: 480px; }
+.place-card img { border-radius: 4px; margin-bottom: .8rem; }
+.place-card .type { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--green); }
+.hint { color: var(--muted); font-style: italic; }
+
+/* ========== Было и стало ========== */
+.compare-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.compare {
+  position: relative; margin: 0 auto; aspect-ratio: 16 / 10; overflow: hidden;
+  border: 3px solid var(--red); border-radius: var(--radius); background: #000; user-select: none;
+}
+.compare img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.compare-then { position: absolute; inset: 0; width: 50%; overflow: hidden; }
+.compare-then img { height: 100%; max-width: none; } /* ширину задаёт JS (fitThen) */
+.compare-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #fff; pointer-events: none; box-shadow: 0 0 6px rgba(0,0,0,.5); }
+.compare input[type=range] {
+  position: absolute; inset: 0; width: 100%; height: 100%; margin: 0;
+  opacity: 0; cursor: ew-resize;
+}
+.tag { position: absolute; top: 12px; padding: .2rem .7rem; background: rgba(0,0,0,.65); color: #fff; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; border-radius: 3px; pointer-events: none; }
+.tag-then { left: 12px; }
+.tag-now { right: 12px; }
+.caption { text-align: center; color: var(--muted); font-style: italic; margin-top: .8rem; }
+
+/* ========== Связь поколений ========== */
+.gen-legend { color: var(--ink); font-size: 1rem; display: flex; align-items: center; gap: .7rem; }
+/* Образец карточки участника войны: белая карточка с красной рамкой */
+.gen-swatch {
+  display: inline-block; flex: none; width: 3.2rem; height: 2rem;
+  border: 2px solid var(--red); border-radius: var(--radius); background: #fff;
+}
+/* Если экран узкий, древо можно прокрутить вбок */
+.gen-tree-wrap { overflow-x: auto; padding-bottom: .5rem; }
+.gen-tree { position: relative; margin: 1rem auto 0; }
+.gen-tree svg { position: absolute; inset: 0; pointer-events: none; }
+.gen-tree path { fill: none; stroke: var(--muted); stroke-width: 1.5; opacity: .45; }
+.gen-title {
+  position: absolute; top: 0; width: 140px;
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--green);
+}
+.gen-node {
+  position: absolute; width: 140px; height: 38px;
+  display: flex; align-items: center; gap: .4rem; padding: 0 .45rem;
+  background: #fff; border: 1px solid #d9cdb6; border-radius: var(--radius);
+  font: inherit; font-size: .74rem; line-height: 1.15; text-align: left; color: var(--ink);
+}
+.gen-node img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex: none; filter: grayscale(1); }
+.gen-node.war { border: 2px solid var(--red); cursor: pointer; }
+.gen-node.war:hover, .gen-node.war:focus-visible { background: #fbeff0; outline: none; }
+.gen-node.me { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; }
+
+.gen-sub { margin-top: 3rem; font-size: 1.5rem; color: var(--red); }
+.gen-others { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+.gen-card {
+  display: flex; flex-direction: column; gap: .25rem; padding: .6rem; text-align: left; cursor: pointer;
+  font: inherit; font-size: .85rem; color: var(--ink);
+  background: #fff; border: 1px solid #d9cdb6; border-top: 3px solid var(--red); border-radius: var(--radius);
+}
+.gen-card:hover, .gen-card:focus-visible { box-shadow: 0 4px 14px rgba(179, 18, 43, .15); outline: none; }
+.gen-card img, .gen-card .person-nophoto { width: 100%; aspect-ratio: 3 / 4; height: auto; object-fit: cover; filter: grayscale(1); margin-bottom: .3rem; }
+.gen-card .person-nophoto { font-size: .75rem; }
+.gen-card .type { font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--red); }
+.gen-card-years { color: var(--muted); font-size: .8rem; }
+.gen-map { margin: 3rem auto 0; }
+.gen-map img { width: 100%; border: 3px solid #fff; box-shadow: 0 2px 12px rgba(0, 0, 0, .15); }
+
+/* Окно с историей человека */
+.person {
+  width: min(680px, calc(100% - 2rem)); max-height: calc(100vh - 3rem);
+  padding: 1.6rem; border: none; border-top: 5px solid var(--red); border-radius: var(--radius);
+  background: var(--linen); color: var(--ink);
+}
+.person::backdrop { background: rgba(42, 27, 23, .65); }
+.person-close {
+  position: absolute; top: .5rem; right: .8rem; border: none; background: none;
+  font-size: 2rem; line-height: 1; color: var(--muted); cursor: pointer;
+}
+.person-close:hover { color: var(--red); }
+.person-head { display: flex; gap: 1.2rem; align-items: flex-start; }
+.person-head img, .person-nophoto {
+  width: 150px; height: 195px; object-fit: cover; flex: none;
+  border: 3px solid #fff; box-shadow: 0 2px 10px rgba(0, 0, 0, .15); filter: grayscale(1);
+}
+.person-nophoto {
+  display: flex; align-items: center; justify-content: center; text-align: center; padding: 1rem;
+  background: var(--linen-dark); color: var(--muted); font-size: .85rem; filter: none;
+}
+.person-facts .type { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--red); }
+.person-facts h3 { margin: .3rem 0 .2rem; font-size: 1.35rem; }
+.person-facts p { margin: .35rem 0; font-size: .95rem; }
+.person-years { color: var(--muted); }
+.person-kin { color: var(--green); font-size: .88rem !important; }
+.person-text { margin: 1.1rem 0 0; line-height: 1.6; }
+@media (max-width: 560px) { .person-head { flex-direction: column; } }
+
+/* ========== Тест ========== */
+.quiz {
+  background: #fff; border: 1px solid var(--linen-dark); border-top: 4px solid var(--red);
+  border-radius: var(--radius); padding: 1.5rem 1.8rem;
+}
+.quiz h3 { font-size: 1.3rem; margin-bottom: 1rem; }
+.quiz-progress { margin: 0 0 .5rem; font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--green); }
+.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.quiz-option {
+  font: inherit; text-align: left; padding: .75rem 1rem; cursor: pointer; color: var(--ink);
+  background: var(--linen); border: 2px solid var(--linen-dark); border-radius: var(--radius); transition: border-color .15s;
+}
+.quiz-option:hover:not(:disabled) { border-color: var(--red); }
+.quiz-option:disabled { cursor: default; }
+.quiz-option.right { border-color: var(--green); background: #e3efe6; font-weight: 700; }
+.quiz-option.wrong { border-color: var(--red); background: #f7e3e6; }
+.quiz-explain { margin: 1rem 0 0; color: var(--ink); line-height: 1.55; }
+.quiz-explain:empty { display: none; }
+.quiz-score { font-family: var(--font-head); font-size: 3rem; font-weight: 800; color: var(--red); margin: .2rem 0; }
+@media (max-width: 560px) { .quiz-options { grid-template-columns: 1fr; } }
+
+/* ========== Карточки ========== */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+.card {
+  background: #fff; border: 1px solid var(--linen-dark); border-top: 4px solid var(--red);
+  border-radius: var(--radius); padding: 1.2rem;
+}
+.card .big { font-family: var(--font-head); font-size: 2.2rem; font-weight: 800; color: var(--red); line-height: 1; }
+.card p { margin: .5rem 0 0; color: var(--muted); font-size: .98rem; }
+
+.selectable .card { cursor: pointer; text-align: left; font: inherit; color: inherit; transition: all .15s; }
+.selectable .card:hover { box-shadow: 0 4px 14px rgba(179, 18, 43, .12); }
+.selectable .card.picked { background: var(--red); color: #fff; border-color: var(--red-dark); }
+.selectable .card.picked p, .selectable .card.picked .big { color: #fff; }
+
+.result { margin-top: 1.5rem; padding: 1.2rem 1.4rem; border-left: 5px solid var(--green); background: #fff; border-radius: var(--radius); min-height: 3.5rem; }
+
+/* ========== Как сделано ========== */
+.how-list { list-style: none; padding: 0; display: grid; gap: .8rem; }
+.how-list li { background: #fff; padding: 1rem 1.2rem; border-left: 5px solid var(--red); border-radius: var(--radius); }
+.how-list strong { color: var(--red); }
+
+/* ========== Подвал ========== */
+.footer { text-align: center; background: var(--linen); padding-bottom: 2rem; }
+.footer p { max-width: var(--max); margin: 1.2rem auto 0; padding: 0 1.2rem; }
+.small { font-size: .85rem; color: var(--muted); }
+
+/* ========== Телефон ========== */
+@media (max-width: 800px) {
+  body { font-size: 17px; }
+  .topbar nav { display: none; }
+  .map-wrap { grid-template-columns: 1fr; }
+  #map-canvas { height: 360px; }
+  .place-card { max-height: none; }
+  .hero-inner { padding-top: 3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}

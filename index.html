@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Связь поколений: мы помним</title>
+  <!-- Значок вкладки: ромб белорусского орнамента. Картинка встроена прямо в страницу (data-URI),
+       потому что Chrome и Edge не загружают значок из отдельного файла, когда сайт открыт двойным кликом.
+       Исходники значка: images/favicon.svg и images/favicon.png -->
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFKElEQVR42qWXy29UVRjAf+fc19wpM9PbFlzIwkhDkEpikRZwIchGWFBhh9EduKAuFBOJiAsxPgjEFgyKEoxaY2KCCQomxn9AsQ0mPsAWW4pRxLbM9DEz7Z07c89xMcO0CM08POu58/ud7/vOd84ntNZSCKF8f2KHZbj7cnOZjWhtUc1SGo1GSFnVzxEi77hLvs+Hc72RyNIvtdayCM+kDjq2e5YweLRauA4V0rEw3Ag6DKsT0NoiDB51bPesn0kdFEIo4WcndjiRyNnZdFqjtRay8nZ0IcRKxMgMXSP050i0ryY/OY2wTNAVvlVKIYSIxmIi5/s7pSHZrwp5tKZquBGL4v99k4u7XmCgq5v05WGsxjg6KICokAUppdZoVchjSPaL2ekbecCsKoIleHAjRf8Te8kMXUWaJlZTgs7zJ4m1tZKfnEHYlSNRWgVZN3xwBLPBRZgGQXKK/q69pC8NY3nVRaK0TFn3ziMORtTFXuoBECSn6d9eu4SsB25EIwgpaP/sKB1fncRqSiAE5Cdrl5D1wNGw7sxxvI0P0XD/vaw//z6WlwBql5D1wB8+c5zmxzag/ABVUMQebKXz3Ht1Scja4cdo2dwBQjDa28fgyz0AxNpa6ahDQtYO7wQEV3s+ZujQCUaP9/HbgR50nRKyLvixPi7vP4LZGMNe1sLIkdMMHuitKxJyvrfXBre8OGiNLhSwlzUzcvTDxSVSd5FYKKCVwowvIfhnstxkpGNDqFl35jgtWzYgpPEfOKB1Wd5e1lSWEFISX7OSzvMniy1aqWKz2r6X9OUR7GavfIGJ7OTfWjo2c6PXubhrH9nhPzAaXMwGl/ZPj+I98hDKDxjt7WPotRNYiRha6zL8tj5vGASpKe7rfpJVrz+P4UbI/n6Ni7tewP9zDB2GWF6c9s/fpnFtG+GcjwSNkIJwbo4gNYW0TFAaads4S5vQoQIBuZtJdL5QvPv1Io1eClCa3FiynB7La8SIumgVIiyT/FSacDpT+h+QQkrC2TkSa1ez4dvTWF4CFeTJ/TPBhcd3kx0axYg4tPW8xIr9u8mN30SYxh3VLCyTYCzJ8qe7aO87jLEkSm58igvbnmHmp0EwDAA6vnqXZVs3UchkEYYs1oAwDPKpaWIPrKDz/Ens5kZAkJ+aKebt19/RWrPqzX2seHEPwXgKYcxLLISv+eBVhGHg/zXOwI5usldGMaIuQohiPW1eT5Asfb/wFAjbJD85Q6yttVg8TQuOUVc36UvDAKx6ax8rXtxdlhCWSTBegp86hLRM/L8mGNjx7PxJgnIxB8lU8eFyizs7fWM+oQJ0UMDy4qQvDdO/fS/5yWkALC9Bx7n3iLW1AjB4oJeRno9Aa5Y/Vdx5Gb7z2TvujXn47S++2wVqkBBScum5N/HHkrR/chhhyprhdxeoUiK+ZiWFdBatwWxw8a+P3x72KuCL34b6LjWxoLUOdHWT/uUKhhvBsC386xN1wRePQKVIaLC8OOu/OYXlefywbQ+ZK6M1wysLLCaRmkYrhXv/ckzXZebnQYyoe5dqrzxiVBZYRCJITiEtAxWq4nG8dc5rgN+qgULlV+mdNWE3N6IKCmmaJfixmuFAQVq2OeBEHJTSqiaJr9/H9uLoMGTdF+/QsmVj1XCltHIiDpZtDtQ+mpXSYTd7pL77kfxMlnu2biJIJRFm5RHjv6OZAPAzqYNO1H5dBQG5XI6qaqIQFnu8lKWLxagq5o7jIG2b3GzwSmRJ0xvi/4znWqliaoz6x/N/AZzBrRPHeSq+AAAAAElFTkSuQmCC">
+  <link rel="apple-touch-icon" href="images/favicon-180.png">
+  <meta name="description" content="Связь поколений: память о Великой Отечественной войне в истории Гомеля и одной семьи — лента времени, карта памяти, было и стало, родословное древо, тест.">
+
+  <!-- Всё подключено локально, чтобы сайт работал без интернета -->
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#top" data-town>Малая родина</a>
+  <nav>
+    <a href="#past">Прошлое</a>
+    <a href="#map">Карта памяти</a>
+    <a href="#then-now">Было и стало</a>
+    <a href="#generations">Связь поколений</a>
+    <a href="#quiz">Тест</a>
+    <a href="#future">Будущее</a>
+    <a href="#how">Как сделано</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ГЕРОЙ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="kicker">Республиканский конкурс «ПАТРИОТ.by»</p>
+      <h1>Связь поколений: <span>мы помним</span></h1>
+      <p class="lead">
+        <strong data-town>ТВОЙ ГОРОД</strong> — место, где начинается Беларусь.
+        Этот сайт хранит его прошлое и не даёт нам его забыть, показывает настоящее и пробует представить, каким оно станет.
+      </p>
+      <a class="btn" href="#past">Начать путь</a>
+    </div>
+    <div class="ornament-band" aria-hidden="true"></div>
+  </section>
+
+  <!-- ПРОШЛОЕ: ЛЕНТА ВРЕМЕНИ -->
+  <section id="past" class="block">
+    <h2>Прошлое</h2>
+    <p class="section-lead">Главные события в жизни края. Нажми на карточку, чтобы прочитать историю.</p>
+    <ol class="timeline" id="timeline" aria-label="Лента времени"></ol>
+  </section>
+
+  <!-- КАРТА -->
+  <section id="map" class="block block-tint">
+    <h2>Карта памяти</h2>
+    <p class="section-lead">Места, которые нельзя забывать. Выбери тип, чтобы отфильтровать точки.</p>
+    <div class="filters" id="filters" role="group" aria-label="Фильтр точек"></div>
+    <div class="map-wrap">
+      <div id="map-canvas" aria-label="Интерактивная карта"></div>
+      <aside class="place-card" id="place-card" aria-live="polite">
+        <p class="hint">Нажми на точку на карте.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- БЫЛО И СТАЛО -->
+  <section id="then-now" class="block">
+    <h2>Было и стало</h2>
+    <p class="section-lead">Потяни ползунок, чтобы сравнить старое фото и современное.</p>
+    <div class="compare-tabs" id="compare-tabs" role="tablist"></div>
+    <figure class="compare" id="compare">
+      <img id="img-now" alt="Место сегодня">
+      <div class="compare-then" id="compare-then"><img id="img-then" alt="Место в прошлом"></div>
+      <input type="range" min="0" max="100" value="50" id="compare-range" aria-label="Сравнение: было и стало">
+      <div class="compare-line" id="compare-line"></div>
+      <span class="tag tag-then">Было</span>
+      <span class="tag tag-now">Стало</span>
+    </figure>
+    <p class="caption" id="compare-caption"></p>
+  </section>
+
+  <!-- СВЯЗЬ ПОКОЛЕНИЙ -->
+  <section id="generations" class="block block-tint">
+    <h2>Связь поколений</h2>
+    <p class="section-lead" id="gen-intro"></p>
+    <p class="gen-legend"><span class="gen-swatch"></span> участник Великой Отечественной войны — нажми, чтобы узнать его историю</p>
+    <div class="gen-tree-wrap"><div class="gen-tree" id="gen-tree" aria-label="Родословное древо"></div></div>
+
+    <h3 class="gen-sub">Их тоже помним</h3>
+    <p class="section-lead">Братья и сёстры предков Серафимы, их мужья и жёны — тоже участники войны. Кто-то вернулся домой, кто-то погиб или пропал без вести.</p>
+    <div class="gen-others" id="gen-others"></div>
+
+    <figure class="gen-map">
+      <a href="images/people/boevye-puti.jpg" target="_blank" title="Открыть крупно">
+        <img src="images/people/boevye-puti.jpg" alt="Карта «Боевые пути»: портреты родственников и линии их фронтовых дорог по Европе" loading="lazy">
+      </a>
+      <figcaption>Карта «Боевые пути» из работы Серафимы Буй: где воевали её родственники. Нажми на карту, чтобы открыть её крупно.</figcaption>
+    </figure>
+    <p class="caption" id="gen-source"></p>
+  </section>
+
+  <!-- ТЕСТ -->
+  <section id="quiz" class="block">
+    <h2 id="quiz-title">Проверь себя</h2>
+    <p class="section-lead" id="quiz-lead"></p>
+    <div class="quiz" id="quiz-box" aria-live="polite"></div>
+  </section>
+
+  <!-- НАСТОЯЩЕЕ -->
+  <section id="present" class="block block-tint">
+    <h2>Настоящее</h2>
+    <p class="section-lead">Что происходит в крае сегодня.</p>
+    <div class="cards" id="present-cards"></div>
+  </section>
+
+  <!-- БУДУЩЕЕ -->
+  <section id="future" class="block">
+    <h2>Будущее</h2>
+    <p class="section-lead">Идеи развития родного края. Отметь то, что считаешь важным, и получи свой проект.</p>
+    <div class="cards selectable" id="future-cards"></div>
+    <div class="result" id="future-result" aria-live="polite"></div>
+  </section>
+
+  <!-- КАК СДЕЛАНО -->
+  <section id="how" class="block block-tint">
+    <h2>Как сделано</h2>
+    <p class="section-lead">Технологии, которые использованы в проекте.</p>
+    <ul class="how-list" id="how-list"></ul>
+  </section>
+
+</main>
+
+<!-- Окно с историей человека (Связь поколений). Открывается из js/main.js -->
+<dialog class="person" id="person" aria-labelledby="person-name">
+  <button class="person-close" type="button" aria-label="Закрыть">×</button>
+  <div id="person-body"></div>
+</dialog>
+
+<footer class="footer">
+  <div class="ornament-band" aria-hidden="true"></div>
+  <p>Автор: <span data-author>ИМЯ ФАМИЛИЯ</span>, <span data-school>УЧРЕЖДЕНИЕ ОБРАЗОВАНИЯ</span>, руководитель: <span data-teacher>ФИО</span>.</p>
+  <p class="small">Номинация «Связь поколений: мы помним», 2026.</p>
+</footer>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="data/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

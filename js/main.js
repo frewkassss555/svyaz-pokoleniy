@@ -1,11 +1,5 @@
-/* Малая родина: основной скрипт.
-   Все тексты берутся из data/data.js (его собирает tools/build_data.py из файлов .json),
-   поэтому чтобы поменять содержание, код трогать не нужно.
-   Данные вставляются через textContent (безопасно). */
-
 const $ = (sel) => document.querySelector(sel);
 
-// Создаёт элемент: el("div", {class: "card"}, "текст" или другие элементы)
 function el(tag, attrs = {}, ...children) {
   const node = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
@@ -15,7 +9,6 @@ function el(tag, attrs = {}, ...children) {
   return node;
 }
 
-/* ---------- Общие данные ---------- */
 function fillSite(site) {
   document.querySelectorAll("[data-town]").forEach((n) => (n.textContent = site.town));
   document.querySelectorAll("[data-author]").forEach((n) => (n.textContent = site.author));
@@ -28,7 +21,6 @@ function fillSite(site) {
   });
 }
 
-/* ---------- Лента времени ---------- */
 function buildTimeline(items) {
   const ol = $("#timeline");
   items.forEach((it) => {
@@ -47,9 +39,6 @@ function buildTimeline(items) {
   });
 }
 
-/* ---------- Карта ---------- */
-// Основа карты. Сначала пробуем офлайн-картинку (images/map-gomel.png):
-// она работает без интернета. Если картинки нет, берём онлайн-плитки OpenStreetMap.
 function addBaseMap(map, site) {
   const attribution = "© участники OpenStreetMap";
   const offline = site.map_offline;
@@ -64,15 +53,13 @@ function addBaseMap(map, site) {
   probe.onload = () => {
     const bounds = L.latLngBounds(offline.bounds);
     L.imageOverlay(offline.image, bounds, { attribution }).addTo(map);
-    // Не пускаем карту за края картинки (вместе с maxBoundsViscosity: 1 в buildMap)
+
     map.setMaxBounds(bounds);
 
-    // Самое мелкое приближение — такое, при котором картинка закрывает всё окно карты.
-    // getBoundsZoom(bounds, true) считает именно его. Пересчитываем, если окно изменило размер.
     function limitZoom() {
       const minZoom = map.getBoundsZoom(bounds, true);
       map.setMinZoom(minZoom);
-      map.setMaxZoom(minZoom + 4); // дальше картинка становится размытой
+      map.setMaxZoom(minZoom + 4);
     }
     limitZoom();
     map.on("resize", limitZoom);
@@ -91,8 +78,6 @@ function buildMap(site, data) {
       "Карта не загрузилась: нет папки vendor/leaflet. Запусти python tools/download_vendor.py";
     return;
   }
-  // zoomSnap: 0.25 — приближение шагами по четверти, чтобы картинка точно легла в окно;
-  // maxBoundsViscosity: 1 — край карты «твёрдый», за него нельзя утянуть
   const map = L.map("map-canvas", { zoomSnap: 0.25, maxBoundsViscosity: 1 })
     .setView(site.map_center, site.map_zoom);
   addBaseMap(map, site);
@@ -104,7 +89,6 @@ function buildMap(site, data) {
     markers.push({ marker, type: p.type });
   });
 
-  // Фильтры по типу
   const filters = $("#filters");
   const active = new Set(data.types);
   data.types.forEach((type) => {
@@ -130,7 +114,6 @@ function showPlace(p) {
   );
 }
 
-/* ---------- Было и стало ---------- */
 function buildCompare(items) {
   const tabs = $("#compare-tabs");
   const range = $("#compare-range");
@@ -143,7 +126,6 @@ function buildCompare(items) {
     then.style.width = v + "%";
     line.style.left = v + "%";
   }
-  // Внутренняя картинка «было» должна быть той же ширины, что и весь блок.
   function fitThen() { imgThen.style.width = box.clientWidth + "px"; }
 
   function show(i) {
@@ -167,13 +149,9 @@ function buildCompare(items) {
   window.addEventListener("resize", fitThen);
   show(0);
 }
-
-/* ---------- Связь поколений: родословное древо ---------- */
-// Древо идёт слева направо: в первом столбце Серафима, дальше родители, бабушки и дедушки, прадеды...
-// Каждый человек — кнопка, поставленная по координатам; линии между ними рисуются в SVG.
-const GEN_COL = 154; // ширина столбца (одно поколение), px
-const GEN_ROW = 46;  // высота строки, px
-const GEN_NODE_W = 140, GEN_NODE_H = 38; // размер карточки человека, px
+const GEN_COL = 154;
+const GEN_ROW = 46;
+const GEN_NODE_W = 140, GEN_NODE_H = 38;
 const WAR_LABELS = { "Фронт": "Фронтовик", "Партизан": "Партизан", "Блокада": "Блокада Ленинграда", "Погиб": "Погиб на войне" };
 const GEN_TITLES = ["Серафима", "Родители", "Бабушки и дедушки", "Прадеды", "Прапрадеды", "5-е поколение", "6-е поколение"];
 
@@ -184,8 +162,6 @@ function buildGenerations(gen) {
   const byId = {};
   gen.people.forEach((p) => (byId[p.id] = p));
 
-  // 1. Раскладка. У самых старших предков (без родителей в древе) — свои строки по порядку.
-  //    Остальные стоят посередине между своими родителями.
   let nextRow = 0;
   function place(p) {
     const parents = (p.parents || []).map((id) => byId[id]);
@@ -196,7 +172,7 @@ function buildGenerations(gen) {
 
   const maxGen = Math.max(...gen.people.map((p) => p.gen));
   const width = maxGen * GEN_COL + GEN_NODE_W;
-  const height = (nextRow + 1) * GEN_ROW; // первая строка — заголовки столбцов
+  const height = (nextRow + 1) * GEN_ROW;
   const left = (p) => p.gen * GEN_COL;
   const top = (p) => (p.row + 1) * GEN_ROW;
 
@@ -204,7 +180,6 @@ function buildGenerations(gen) {
   tree.style.width = width + "px";
   tree.style.height = height + "px";
 
-  // 2. Линии: от правого края ребёнка к левому краю каждого родителя, «ступенькой»
   const NS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(NS, "svg");
   svg.setAttribute("width", width);
@@ -222,15 +197,12 @@ function buildGenerations(gen) {
   });
   tree.append(svg);
 
-  // 3. Заголовки столбцов
   for (let g = 0; g <= maxGen; g++) {
     const title = el("div", { class: "gen-title" }, GEN_TITLES[g] || g + "-е поколение");
     title.style.left = g * GEN_COL + "px";
     tree.append(title);
   }
 
-  // 4. Карточки людей: фамилия и имя (полное ФИО — во всплывающей подсказке).
-  //    У участников войны — портрет и красная рамка.
   gen.people.forEach((p) => {
     const shortName = p.name.split(" ").slice(0, 2).join(" ");
     const node = el("button", { class: "gen-node", type: "button", title: p.name }, el("span", { class: "gen-name" }, shortName));
@@ -245,7 +217,6 @@ function buildGenerations(gen) {
     tree.append(node);
   });
 
-  // 5. «Их тоже помним»: родственники вне прямой линии предков — карточки в сетке
   const others = $("#gen-others");
   gen.others.forEach((p) => {
     const card = el("button", { class: "gen-card", type: "button" },
@@ -258,7 +229,6 @@ function buildGenerations(gen) {
   });
 }
 
-/* ---------- Окно с историей человека ---------- */
 function openPerson(p) {
   const photo = p.photo
     ? el("img", { src: p.photo, alt: p.name })
@@ -267,7 +237,7 @@ function openPerson(p) {
     el("span", { class: "type" }, WAR_LABELS[p.war] || p.war),
     el("h3", { id: "person-name" }, p.name),
     el("p", { class: "person-years" }, p.years || ""));
-  // Кем приходится: у предков — прямо («прабабушка»), у остальных — через кого они родня
+
   if (p.relation) facts.append(el("p", {}, el("strong", {}, "Кем приходится Серафиме: "), p.relation));
   if (p.link) facts.append(el("p", {}, el("strong", {}, "Кто это: "), p.link));
   if (p.kin) facts.append(el("p", { class: "person-kin" }, "По программе «FamilyTree»: " +
@@ -281,20 +251,16 @@ function openPerson(p) {
 function setupPersonDialog() {
   const dialog = $("#person");
   dialog.querySelector(".person-close").addEventListener("click", () => dialog.close());
-  // Клик по затемнённому фону вокруг окна тоже закрывает его
+
   dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
 }
-
-/* ---------- Тест «Проверь себя» ---------- */
-// Вопросы показываются по одному. После ответа подсвечиваем правильный вариант,
-// показываем справку и кнопку «Дальше». В конце — итог и кнопка «Пройти ещё раз».
 function buildQuiz(quiz) {
   $("#quiz-title").textContent = quiz.title;
   $("#quiz-lead").textContent = quiz.lead;
   const box = $("#quiz-box");
   const total = quiz.questions.length;
-  let index = 0; // номер текущего вопроса
-  let score = 0; // сколько правильных ответов
+  let index = 0;
+  let score = 0;
 
   function showQuestion() {
     const q = quiz.questions[index];
@@ -308,7 +274,7 @@ function buildQuiz(quiz) {
       const option = el("button", { class: "quiz-option", type: "button" }, text);
       option.addEventListener("click", () => {
         if (i === q.answer) score++;
-        // Блокируем все варианты, отмечаем правильный и, если ошиблись, выбранный
+
         [...options.children].forEach((b, j) => {
           b.disabled = true;
           if (j === q.answer) b.classList.add("right");
@@ -340,7 +306,6 @@ function buildQuiz(quiz) {
   showQuestion();
 }
 
-/* ---------- Настоящее ---------- */
 function buildPresent(items) {
   const wrap = $("#present-cards");
   items.forEach((it) => {
@@ -353,7 +318,6 @@ function buildPresent(items) {
   });
 }
 
-/* ---------- Будущее: выбор идей ---------- */
 function buildFuture(items) {
   const wrap = $("#future-cards");
   const result = $("#future-result");
@@ -386,7 +350,6 @@ function buildFuture(items) {
   renderResult();
 }
 
-/* ---------- Запуск ---------- */
 function init() {
   try {
     const all = window.SITE_DATA;

@@ -1,4 +1,3 @@
-/* ========== Палитра и основа ========== */
 :root {
   --linen: #f6f1e7;
   --linen-dark: #ece3d1;
@@ -9,8 +8,8 @@
   --muted: #6b5a52;
   --radius: 6px;
   --max: 1080px;
-  --font-head: "Montserrat", Arial, sans-serif; /* шрифт заголовков: менять здесь */
-  --font-text: "Onest", Arial, sans-serif;      /* шрифт текста: менять здесь */
+  --font-head: "Montserrat", Arial, sans-serif;
+  --font-text: "Onest", Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -31,7 +30,6 @@ h3 { font-size: 1.25rem; }
 a { color: var(--red); }
 img { max-width: 100%; display: block; }
 
-/* Орнамент ромбов — как на вышитом рушнике. Рисуется SVG прямо в CSS. */
 .ornament-band {
   height: 44px;
   background-color: var(--linen);
@@ -42,7 +40,6 @@ img { max-width: 100%; display: block; }
   border-bottom: 3px solid var(--red);
 }
 
-/* ========== Шапка ========== */
 .topbar {
   position: sticky; top: 0; z-index: 1000;
   display: flex; justify-content: space-between; align-items: center; gap: 1rem;
@@ -56,9 +53,6 @@ img { max-width: 100%; display: block; }
 .topbar nav a { text-decoration: none; color: var(--ink); }
 .topbar nav a:hover { color: var(--red); }
 
-/* ========== Герой ========== */
-/* Фото на фоне. Сверху два слоя затемнения цветом «чернил»:
-   слева темнее (там текст), справа светлее (там видно фото). */
 .hero {
   background-color: var(--ink);
   background-image:
@@ -66,13 +60,12 @@ img { max-width: 100%; display: block; }
     url("../images/hero-palace.jpg");
   background-size: cover;
   background-position: center 30%;
-  /* Первый экран на всю высоту окна (минус шапка), орнамент прижат к низу */
+
   min-height: calc(100vh - 3.2rem);
   display: flex;
   flex-direction: column;
 }
-/* flex: 1 — блок с текстом забирает всё свободное место.
-   justify-content: flex-end — текст прижат к низу; нижний padding — расстояние до орнамента */
+
 .hero-inner {
   flex: 1; width: 100%; max-width: var(--max); margin: 0 auto; padding: 4rem 1.2rem 5rem;
   display: flex; flex-direction: column; justify-content: flex-end;
@@ -80,6 +73,11 @@ img { max-width: 100%; display: block; }
 .kicker { text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; color: var(--linen); opacity: .85; margin: 0 0 1rem; }
 .hero h1 { font-size: clamp(2.2rem, 7vw, 4.6rem); font-weight: 800; color: #fff; }
 .hero h1 span { color: #f3c4c9; display: block; }
+
+.hero-name {
+  margin: -.2rem 0 1.4rem; font-family: var(--font-head); font-weight: 700;
+  font-size: clamp(1.1rem, 2.6vw, 1.7rem); color: var(--linen);
+}
 .lead { max-width: 700px; font-size: 1.15rem; color: var(--linen); }
 .btn {
   display: inline-block; margin-top: 1rem; padding: .8rem 1.6rem;
@@ -87,15 +85,13 @@ img { max-width: 100%; display: block; }
   border-radius: var(--radius); font-weight: 700; transition: background .2s;
 }
 .btn:hover { background: var(--red-dark); }
-.hero .btn { align-self: flex-start; } /* кнопка по ширине текста, а не на всю строку */
+.hero .btn { align-self: flex-start; }
 
-/* ========== Блоки ========== */
 .block { padding: 4rem 1.2rem; max-width: none; }
 .block > * { max-width: var(--max); margin-left: auto; margin-right: auto; }
 .block-tint { background: var(--linen-dark); }
 .section-lead { color: var(--muted); margin-bottom: 2rem; }
 
-/* ========== Лента времени ========== */
 .timeline { list-style: none; padding: 0; position: relative; }
 .timeline::before {
   content: ""; position: absolute; left: 14px; top: 0; bottom: 0; width: 3px; background: var(--red);
@@ -117,7 +113,6 @@ img { max-width: 100%; display: block; }
 .tl-item.open .tl-text { display: block; }
 .tl-item.open::before { background: var(--red); }
 
-/* ========== Карта ========== */
 .filters { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
 .chip {
   font: inherit; font-size: .9rem; cursor: pointer; padding: .35rem .9rem;
@@ -133,7 +128,6 @@ img { max-width: 100%; display: block; }
 .place-card .type { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--green); }
 .hint { color: var(--muted); font-style: italic; }
 
-/* ========== Было и стало ========== */
 .compare-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
 .compare {
   position: relative; margin: 0 auto; aspect-ratio: 16 / 10; overflow: hidden;
@@ -141,7 +135,7 @@ img { max-width: 100%; display: block; }
 }
 .compare img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
 .compare-then { position: absolute; inset: 0; width: 50%; overflow: hidden; }
-.compare-then img { height: 100%; max-width: none; } /* ширину задаёт JS (fitThen) */
+.compare-then img { height: 100%; max-width: none; }
 .compare-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #fff; pointer-events: none; box-shadow: 0 0 6px rgba(0,0,0,.5); }
 .compare input[type=range] {
   position: absolute; inset: 0; width: 100%; height: 100%; margin: 0;
@@ -152,14 +146,13 @@ img { max-width: 100%; display: block; }
 .tag-now { right: 12px; }
 .caption { text-align: center; color: var(--muted); font-style: italic; margin-top: .8rem; }
 
-/* ========== Связь поколений ========== */
 .gen-legend { color: var(--ink); font-size: 1rem; display: flex; align-items: center; gap: .7rem; }
-/* Образец карточки участника войны: белая карточка с красной рамкой */
+
 .gen-swatch {
   display: inline-block; flex: none; width: 3.2rem; height: 2rem;
   border: 2px solid var(--red); border-radius: var(--radius); background: #fff;
 }
-/* Если экран узкий, древо можно прокрутить вбок */
+
 .gen-tree-wrap { overflow-x: auto; padding-bottom: .5rem; }
 .gen-tree { position: relative; margin: 1rem auto 0; }
 .gen-tree svg { position: absolute; inset: 0; pointer-events: none; }
@@ -194,7 +187,6 @@ img { max-width: 100%; display: block; }
 .gen-map { margin: 3rem auto 0; }
 .gen-map img { width: 100%; border: 3px solid #fff; box-shadow: 0 2px 12px rgba(0, 0, 0, .15); }
 
-/* Окно с историей человека */
 .person {
   width: min(680px, calc(100% - 2rem)); max-height: calc(100vh - 3rem);
   padding: 1.6rem; border: none; border-top: 5px solid var(--red); border-radius: var(--radius);
@@ -223,7 +215,6 @@ img { max-width: 100%; display: block; }
 .person-text { margin: 1.1rem 0 0; line-height: 1.6; }
 @media (max-width: 560px) { .person-head { flex-direction: column; } }
 
-/* ========== Тест ========== */
 .quiz {
   background: #fff; border: 1px solid var(--linen-dark); border-top: 4px solid var(--red);
   border-radius: var(--radius); padding: 1.5rem 1.8rem;
@@ -244,7 +235,6 @@ img { max-width: 100%; display: block; }
 .quiz-score { font-family: var(--font-head); font-size: 3rem; font-weight: 800; color: var(--red); margin: .2rem 0; }
 @media (max-width: 560px) { .quiz-options { grid-template-columns: 1fr; } }
 
-/* ========== Карточки ========== */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
 .card {
   background: #fff; border: 1px solid var(--linen-dark); border-top: 4px solid var(--red);
@@ -260,17 +250,14 @@ img { max-width: 100%; display: block; }
 
 .result { margin-top: 1.5rem; padding: 1.2rem 1.4rem; border-left: 5px solid var(--green); background: #fff; border-radius: var(--radius); min-height: 3.5rem; }
 
-/* ========== Как сделано ========== */
 .how-list { list-style: none; padding: 0; display: grid; gap: .8rem; }
 .how-list li { background: #fff; padding: 1rem 1.2rem; border-left: 5px solid var(--red); border-radius: var(--radius); }
 .how-list strong { color: var(--red); }
 
-/* ========== Подвал ========== */
 .footer { text-align: center; background: var(--linen); padding-bottom: 2rem; }
 .footer p { max-width: var(--max); margin: 1.2rem auto 0; padding: 0 1.2rem; }
 .small { font-size: .85rem; color: var(--muted); }
 
-/* ========== Телефон ========== */
 @media (max-width: 800px) {
   body { font-size: 17px; }
   .topbar nav { display: none; }
